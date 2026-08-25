@@ -135,18 +135,28 @@ class FingerprintManager:
         sample_rate_hz: float = 50.0
     ) -> List[int]:
         """
-        Extracts RSSI-based fingerprint features from packets and saves samples.
-        Uses sliding windows of RSSI values to create multiple feature samples.
+        Extracts full CSI features from packets and saves samples.
+        Uses sliding windows of CSI values to create multiple feature samples.
         """
         if not packets:
             raise ValueError("No packets provided for fingerprint capture")
 
-        # 1. Extract RSSI values from all packets
-        rssi_values = [p["rssi"] for p in packets if "rssi" in p]
-        if not rssi_values:
-            raise ValueError("No RSSI data found in packets")
+        from feature_extraction.features import extract_window_features
 
-        # 2. Slide windows over RSSI values to create multiple samples
+        # 1. Extract CSI data from all packets
+        csi_list = []
+        timestamps = []
+        for p in packets:
+            if "csi_data" in p:
+                csi_list.append(p["csi_data"])
+                timestamps.append(p.get("timestamp_us", 0) / 1e6)
+
+        if not csi_list:
+            raise ValueError("No CSI data found in packets")
+
+        csi_matrix = np.array(csi_list)
+
+        # 2. Slide windows over CSI data to create multiple samples
         # Window = 1 second of data, 50% overlap
         window_size = max(5, int(sample_rate_hz))  # At least 5 readings per window
         step_size = max(1, window_size // 2)
@@ -154,31 +164,35 @@ class FingerprintManager:
         session = get_session()
         sample_ids = []
         try:
-            n_readings = len(rssi_values)
+            n_readings = len(csi_list)
             for start_idx in range(0, n_readings - window_size + 1, step_size):
                 end_idx = start_idx + window_size
-                window_rssi = rssi_values[start_idx:end_idx]
+                window_csi = csi_matrix[start_idx:end_idx]
+                t_start = timestamps[start_idx]
+                t_end = timestamps[end_idx-1]
 
-                # Extract RSSI features for this window
-                features = extract_rssi_features(window_rssi)
-                if not features:
+                # Extract CSI features for this window
+                feat_vector = extract_window_features(window_csi, t_start, t_end, sample_rate_hz)
+                if not feat_vector.features_dict:
                     continue
 
                 sample = FingerprintSample(
                     position_id=position_id,
-                    feature_vector_json=json.dumps(features)
+                    feature_vector_json=json.dumps(feat_vector.features_dict)
                 )
                 session.add(sample)
                 session.flush()
                 sample_ids.append(sample.id)
 
             # If not enough data for sliding windows, save one sample from all data
-            if not sample_ids:
-                features = extract_rssi_features(rssi_values)
-                if features:
+            if not sample_ids and n_readings > 1:
+                t_start = timestamps[0]
+                t_end = timestamps[-1]
+                feat_vector = extract_window_features(csi_matrix, t_start, t_end, sample_rate_hz)
+                if feat_vector.features_dict:
                     sample = FingerprintSample(
                         position_id=position_id,
-                        feature_vector_json=json.dumps(features)
+                        feature_vector_json=json.dumps(feat_vector.features_dict)
                     )
                     session.add(sample)
                     session.flush()
