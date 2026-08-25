@@ -1,0 +1,33 @@
+menu "WiFiSense Configuration"
+
+    config WIFISENSE_WIFI_SSID
+        string "WiFi SSID"
+        default "WiFiSense-AP"
+        help
+            SSID of the Wi-Fi router to connect to.
+
+    config WIFISENSE_WIFI_PASSWORD
+        string "WiFi Password"
+        default "wifisense123"
+        help
+            Password for the Wi-Fi router.
+
+    config WIFISENSE_HOST_IP
+        string "Host IP Address"
+        default "10.76.206.2"
+        help
+            IP address of the host machine running the python receiver.
+
+    config WIFISENSE_CSI_PORT
+        int "CSI UDP Port"
+        default 5566
+        help
+            UDP port on which the python receiver listens for CSI packets.
+
+    config WIFISENSE_CONTROL_PORT
+        int "Control UDP Port"
+        default 5567
+        help
+            UDP port for JSON control logging events.
+
+endmenu

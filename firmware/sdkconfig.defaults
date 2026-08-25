@@ -1,0 +1,30 @@
+# ============================================================
+#  WiFiSense ESP32-CAM Firmware Configuration
+#  Edit the 3 lines marked ← CHANGE THIS before building
+# ============================================================
+
+# ── Target chip (do NOT change) ──────────────────────────────
+CONFIG_IDF_TARGET="esp32"
+
+# ── Your WiFi Network ────────────────────────────────────────
+CONFIG_WIFISENSE_WIFI_SSID="X7"      # ← CHANGE THIS (2.4 GHz only)
+CONFIG_WIFISENSE_WIFI_PASSWORD="12345678"    # ← CHANGE THIS
+
+# ── Your PC's IP address on the same WiFi network ────────────
+#    Run `ipconfig` in CMD → look for IPv4 under Wi-Fi adapter
+CONFIG_WIFISENSE_HOST_IP="10.76.206.2"         # ← YOUR LAPTOP IP
+
+# ── UDP Ports ────────────────────────────────────────
+CONFIG_WIFISENSE_CSI_PORT=5566
+CONFIG_WIFISENSE_CONTROL_PORT=5567
+
+# ── Performance (do NOT change) ──────────────────────────────
+CONFIG_ESP_TASK_WDT=y
+CONFIG_ESP_TASK_WDT_TIMEOUT_S=15
+CONFIG_ESP_TASK_WDT_PANIC=y
+CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y
+CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ=240
+CONFIG_NVS_ENABLED=y
+CONFIG_ESP_WIFI_CSI_ENABLED=y
+
+

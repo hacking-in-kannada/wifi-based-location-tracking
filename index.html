@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WiFiSense Indoor Motion & CSI Fingerprinting dashboard prototype">
+  <title>WiFiSense Indoor Motion & CSI Fingerprinting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="grid-backdrop"></div>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">W</span>
+        <div>
+          <div class="brand-title">WiFiSense</div>
+          <div class="brand-subtitle">CSI motion and fingerprinting</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#overview" class="nav-item active">Overview</a>
+        <a href="#pipeline" class="nav-item">Pipeline</a>
+        <a href="#blueprint" class="nav-item">Blueprint</a>
+        <a href="#models" class="nav-item">Models</a>
+        <a href="#api" class="nav-item">API</a>
+        <a href="#docs" class="nav-item">Docs</a>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="sidebar-label">Live status</div>
+        <div class="status-row">
+          <span class="status-dot"></span>
+          <span>Receiver connected</span>
+        </div>
+        <div class="status-row">
+          <span class="status-dot muted"></span>
+          <span>Camera disabled</span>
+        </div>
+        <div class="status-row">
+          <span class="status-dot"></span>
+          <span>CSI stream stable</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card footer-card">
+        <div class="sidebar-label">Current run</div>
+        <div class="run-stat">
+          <strong>Room 04</strong>
+          <span>Fingerprint training in progress</span>
+        </div>
+        <div class="mini-metrics">
+          <div>
+            <span>Packet rate</span>
+            <strong>118 pps</strong>
+          </div>
+          <div>
+            <span>Confidence</span>
+            <strong>0.86</strong>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero" id="overview">
+        <div>
+          <p class="eyebrow">Production-grade starter</p>
+          <h1>Indoor motion detection and CSI fingerprint localization with a clear confidence model.</h1>
+          <p class="hero-copy">
+            WiFiSense turns Wi-Fi CSI into trained room zones and estimated locations.
+            It is designed to report the closest fingerprinted position, not claim exact centimeter-level tracking.
+          </p>
+          <div class="hero-actions">
+            <button class="primary">Start Training</button>
+            <button class="secondary">Open Blueprint</button>
+          </div>
+        </div>
+
+        <div class="hero-panel">
+          <div class="signal-ring">
+            <div>
+              <span class="signal-label">Estimated zone</span>
+              <strong id="zoneLabel">North Desk</strong>
+            </div>
+            <div class="ring-value">
+              <span id="confidenceValue">86%</span>
+              <small>confidence</small>
+            </div>
+          </div>
+
+          <div class="hero-stats">
+            <article>
+              <span>Motion state</span>
+              <strong id="motionState">Continuous motion</strong>
+            </article>
+            <article>
+              <span>Signal quality</span>
+              <strong id="signalQuality">94%</strong>
+            </article>
+            <article>
+              <span>Packet buffer</span>
+              <strong id="packetBuffer">248</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="metric-grid">
+        <article class="metric-card">
+          <span>RSSI</span>
+          <strong id="rssiValue">-41 dBm</strong>
+          <div class="sparkline" data-series="rssi"></div>
+        </article>
+        <article class="metric-card">
+          <span>Amplitude stability</span>
+          <strong id="ampValue">0.91</strong>
+          <div class="sparkline" data-series="amp"></div>
+        </article>
+        <article class="metric-card">
+          <span>Prediction latency</span>
+          <strong id="latencyValue">38 ms</strong>
+          <div class="sparkline" data-series="latency"></div>
+        </article>
+        <article class="metric-card">
+          <span>Packet rate</span>
+          <strong id="rateValue">118 pps</strong>
+          <div class="sparkline" data-series="rate"></div>
+        </article>
+      </section>
+
+      <section class="panel-grid" id="pipeline">
+        <article class="panel wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Signal pipeline</p>
+              <h2>Receiver to localization flow</h2>
+            </div>
+            <span class="chip">ESP32-CAM CSI only</span>
+          </div>
+          <div class="pipeline">
+            <div class="pipeline-step">CSI Capture</div>
+            <div class="pipeline-step">Noise Cleanup</div>
+            <div class="pipeline-step">Feature Extraction</div>
+            <div class="pipeline-step">Fingerprint DB</div>
+            <div class="pipeline-step">Localization</div>
+            <div class="pipeline-step">Web Dashboard</div>
+          </div>
+          <canvas id="timelineChart" height="180"></canvas>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Motion</p>
+              <h2>Event stream</h2>
+            </div>
+          </div>
+          <div class="event-list" id="eventList"></div>
+        </article>
+      </section>
+
+      <section class="panel-grid" id="blueprint">
+        <article class="panel wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Blueprint</p>
+              <h2>Estimated room position</h2>
+            </div>
+            <div class="chip-group">
+              <span class="chip">Room 04</span>
+              <span class="chip">Zone map</span>
+            </div>
+          </div>
+          <div class="blueprint-wrap">
+            <svg id="blueprintSvg" viewBox="0 0 920 420" role="img" aria-label="Room blueprint with estimated position">
+              <defs>
+                <linearGradient id="roomGradient" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#11233f"></stop>
+                  <stop offset="100%" stop-color="#07101e"></stop>
+                </linearGradient>
+                <radialGradient id="ping" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="rgba(87, 219, 173, 0.9)"></stop>
+                  <stop offset="70%" stop-color="rgba(87, 219, 173, 0.35)"></stop>
+                  <stop offset="100%" stop-color="rgba(87, 219, 173, 0)"></stop>
+                </radialGradient>
+              </defs>
+              <rect x="20" y="20" width="880" height="380" rx="24" fill="url(#roomGradient)" stroke="rgba(128, 181, 255, 0.18)" stroke-width="2"></rect>
+              <g opacity="0.45" stroke="rgba(177, 209, 255, 0.18)">
+                <path d="M80 80H840"></path>
+                <path d="M80 140H840"></path>
+                <path d="M80 200H840"></path>
+                <path d="M80 260H840"></path>
+                <path d="M80 320H840"></path>
+                <path d="M160 60V360"></path>
+                <path d="M280 60V360"></path>
+                <path d="M400 60V360"></path>
+                <path d="M520 60V360"></path>
+                <path d="M640 60V360"></path>
+                <path d="M760 60V360"></path>
+              </g>
+              <rect x="70" y="70" width="160" height="90" rx="18" class="object"></rect>
+              <rect x="710" y="70" width="120" height="120" rx="18" class="object"></rect>
+              <rect x="680" y="270" width="170" height="90" rx="18" class="object"></rect>
+              <rect x="110" y="260" width="220" height="100" rx="22" class="object"></rect>
+              <circle cx="460" cy="210" r="26" fill="url(#ping)" id="positionPing"></circle>
+              <circle cx="460" cy="210" r="10" class="ping-core"></circle>
+              <path d="M460 210L620 128" class="vector"></path>
+              <path d="M460 210L320 320" class="vector"></path>
+              <text x="455" y="46" class="svg-label">Live estimate</text>
+              <text id="blueprintLabel" x="50" y="382" class="svg-caption">North Desk - 0.86 confidence - movement trending east</text>
+            </svg>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel-grid" id="models">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Model comparison</p>
+              <h2>Accuracy and confidence</h2>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Accuracy</th>
+                <th>F1</th>
+                <th>Latency</th>
+              </tr>
+            </thead>
+            <tbody id="modelTable"></tbody>
+          </table>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Training</p>
+              <h2>Session controls</h2>
+            </div>
+          </div>
+          <div class="button-stack">
+            <button class="action">Collect Sample</button>
+            <button class="action">Save Fingerprint</button>
+            <button class="action">Export Dataset</button>
+            <button class="action">Retrain Model</button>
+          </div>
+          <div class="info-card">
+            <strong>Design note</strong>
+            <p>The localization layer reports the nearest trained zone and confidence. This keeps the system honest about CSI limits while still being useful for room-scale presence awareness.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel-grid" id="api">
+        <article class="panel wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">API surface</p>
+              <h2>FastAPI service map</h2>
+            </div>
+          </div>
+          <div class="endpoint-grid">
+            <div class="endpoint">POST /auth/login</div>
+            <div class="endpoint">POST /train/samples</div>
+            <div class="endpoint">POST /fingerprints</div>
+            <div class="endpoint">POST /localize/live</div>
+            <div class="endpoint">GET /motion/events</div>
+            <div class="endpoint">GET /models/compare</div>
+            <div class="endpoint">GET /history/predictions</div>
+            <div class="endpoint">GET /dashboard/live</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel-grid" id="docs">
+        <article class="panel wide">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">Docs</p>
+              <h2>Open-source ready foundation</h2>
+            </div>
+          </div>
+          <div class="doc-cards">
+            <div class="doc-card">
+              <strong>Architecture</strong>
+              <p>Receiver, Python ingestion, signal processing, ML, API, dashboard, and storage layers.</p>
+            </div>
+            <div class="doc-card">
+              <strong>Testing</strong>
+              <p>Unit, integration, firmware, and UI checks can grow from this scaffold.</p>
+            </div>
+            <div class="doc-card">
+              <strong>Deployment</strong>
+              <p>Docker and Nginx friendly structure with room for CI/CD workflows.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

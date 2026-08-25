@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WiFiSenseFeatureSchemaV1",
+  "description": "Flat feature vector schema for a windowed CSI signal segment",
+  "type": "object",
+  "properties": {
+    "timestamp_start": {
+      "type": "number",
+      "description": "UTC start timestamp of the CSI window in seconds"
+    },
+    "timestamp_end": {
+      "type": "number",
+      "description": "UTC end timestamp of the CSI window in seconds"
+    },
+    "mean_sc_[0-63]": {
+      "type": "number",
+      "description": "Mean value for subcarrier j"
+    },
+    "var_sc_[0-63]": {
+      "type": "number",
+      "description": "Variance for subcarrier j"
+    },
+    "std_sc_[0-63]": {
+      "type": "number",
+      "description": "Standard deviation for subcarrier j"
+    },
+    "skew_sc_[0-63]": {
+      "type": "number",
+      "description": "Skewness for subcarrier j"
+    },
+    "kurt_sc_[0-63]": {
+      "type": "number",
+      "description": "Kurtosis for subcarrier j"
+    },
+    "energy_sc_[0-63]": {
+      "type": "number",
+      "description": "Signal energy (sum of squares) for subcarrier j"
+    },
+    "entropy_sc_[0-63]": {
+      "type": "number",
+      "description": "Shannon entropy of amplitude histogram for subcarrier j"
+    },
+    "peaks_sc_[0-63]": {
+      "type": "number",
+      "description": "Number of local peaks detected in the time series for subcarrier j"
+    },
+    "dom_freq_sc_[0-63]": {
+      "type": "number",
+      "description": "Dominant frequency (Hz) excluding the DC offset for subcarrier j"
+    },
+    "centroid_sc_[0-63]": {
+      "type": "number",
+      "description": "Spectral centroid (Hz) from FFT for subcarrier j"
+    },
+    "low_ratio_sc_[0-63]": {
+      "type": "number",
+      "description": "Ratio of energy in low-band (0-2.5 Hz) to total energy for subcarrier j"
+    },
+    "med_ratio_sc_[0-63]": {
+      "type": "number",
+      "description": "Ratio of energy in mid-band (2.5-10 Hz) to total energy for subcarrier j"
+    },
+    "high_ratio_sc_[0-63]": {
+      "type": "number",
+      "description": "Ratio of energy in high-band (10+ Hz) to total energy for subcarrier j"
+    },
+    "diff_mean_sc_[0-63]": {
+      "type": "number",
+      "description": "Mean of absolute first differences (velocity/rate of change) for subcarrier j"
+    },
+    "diff_std_sc_[0-63]": {
+      "type": "number",
+      "description": "Standard deviation of absolute first differences for subcarrier j"
+    },
+    "autocorr_sc_[0-63]": {
+      "type": "number",
+      "description": "Autocorrelation coefficient with lag-1 for subcarrier j"
+    },
+    "agg_mean": {
+      "type": "number",
+      "description": "Average mean value across all subcarriers"
+    },
+    "agg_variance": {
+      "type": "number",
+      "description": "Average variance value across all subcarriers"
+    },
+    "agg_std": {
+      "type": "number",
+      "description": "Average standard deviation across all subcarriers"
+    },
+    "agg_skewness": {
+      "type": "number",
+      "description": "Average skewness across all subcarriers"
+    },
+    "agg_kurtosis": {
+      "type": "number",
+      "description": "Average kurtosis across all subcarriers"
+    },
+    "agg_energy": {
+      "type": "number",
+      "description": "Average energy across all subcarriers"
+    },
+    "agg_entropy": {
+      "type": "number",
+      "description": "Average Shannon entropy across all subcarriers"
+    },
+    "agg_peaks": {
+      "type": "number",
+      "description": "Average number of local peaks across all subcarriers"
+    },
+    "agg_dom_freq": {
+      "type": "number",
+      "description": "Average dominant frequency across all subcarriers"
+    },
+    "agg_centroid": {
+      "type": "number",
+      "description": "Average spectral centroid across all subcarriers"
+    },
+    "agg_low_ratio": {
+      "type": "number",
+      "description": "Average low-frequency energy ratio across all subcarriers"
+    },
+    "agg_med_ratio": {
+      "type": "number",
+      "description": "Average mid-frequency energy ratio across all subcarriers"
+    },
+    "agg_high_ratio": {
+      "type": "number",
+      "description": "Average high-frequency energy ratio across all subcarriers"
+    },
+    "agg_diff_mean": {
+      "type": "number",
+      "description": "Average rate of change mean across all subcarriers"
+    },
+    "agg_diff_std": {
+      "type": "number",
+      "description": "Average rate of change standard deviation across all subcarriers"
+    },
+    "agg_autocorr": {
+      "type": "number",
+      "description": "Average lag-1 autocorrelation across all subcarriers"
+    }
+  },
+  "required": [
+    "timestamp_start",
+    "timestamp_end",
+    "agg_mean",
+    "agg_variance",
+    "agg_std",
+    "agg_skewness",
+    "agg_kurtosis",
+    "agg_energy",
+    "agg_entropy",
+    "agg_peaks",
+    "agg_dom_freq",
+    "agg_centroid",
+    "agg_low_ratio",
+    "agg_med_ratio",
+    "agg_high_ratio",
+    "agg_diff_mean",
+    "agg_diff_std",
+    "agg_autocorr"
+  ]
+}

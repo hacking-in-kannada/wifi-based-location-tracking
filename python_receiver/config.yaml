@@ -1,0 +1,35 @@
+# WiFiSense Python Receiver Configuration
+
+server:
+  host: "0.0.0.0"
+  port: 5566
+  control_port: 5567
+
+pipeline:
+  # Number of worker threads for parsing, validation, and queuing
+  worker_threads: 4
+  # Maximum size of thread-safe queue between recv thread and workers
+  max_queue_size: 10000
+  # Rate at which we buffer before flushing to storage (in milliseconds)
+  flush_interval_ms: 1000
+  # Max batch size for database inserts
+  batch_size: 500
+
+buffer:
+  # Size of the in-memory ring buffer (last N seconds of data)
+  window_seconds: 10
+  # Expected packet rate (Hz) from the receiver (used to calculate max deque size)
+  expected_hz: 50
+
+storage:
+  # Select storage backend: 'sqlite', 'csv', 'jsonl'
+  backend: "sqlite"
+  
+  sqlite:
+    db_url: "sqlite:///c:/Users/shree/Desktop/wifi/database/wifisense.db"
+    
+  csv:
+    directory: "c:/Users/shree/Desktop/wifi/database/csv"
+    
+  jsonl:
+    directory: "c:/Users/shree/Desktop/wifi/database/jsonl"

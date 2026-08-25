@@ -1,0 +1,31 @@
+{
+  "accuracy": 0.0,
+  "f1": 0.0,
+  "latency_ms": 5.737300030887127,
+  "n_samples": 36,
+  "n_positions": 8,
+  "feature_dim": 7,
+  "feature_keys": [
+    "rssi_max",
+    "rssi_mean",
+    "rssi_median",
+    "rssi_min",
+    "rssi_range",
+    "rssi_std",
+    "rssi_variance"
+  ],
+  "id_to_label": {
+    "1": "desktop",
+    "2": "desktop1",
+    "3": "washroom",
+    "4": "washroom1 ",
+    "5": "kitchen ",
+    "6": "kitchen 2",
+    "7": "bed ",
+    "8": "bed"
+  },
+  "scaler_path": "C:\\Users\\shree\\Desktop\\wifi\\machine_learning\\saved_models\\random_forest_scaler.joblib",
+  "saved_at": "2026-08-25T05:39:52.343446",
+  "model_name": "random_forest",
+  "model_path": "C:\\Users\\shree\\Desktop\\wifi\\machine_learning\\saved_models\\random_forest.joblib"
+}

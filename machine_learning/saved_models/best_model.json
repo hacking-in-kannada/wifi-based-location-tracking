@@ -1,0 +1,12 @@
+{
+  "best_model": "knn",
+  "model_name": "knn",
+  "accuracy": 0.0,
+  "f1": 0.0,
+  "latency_ms": 1.2655999744310975,
+  "n_samples": 36,
+  "n_positions": 8,
+  "feature_dim": 7,
+  "saved_path": "C:\\Users\\shree\\Desktop\\wifi\\machine_learning\\saved_models\\knn.joblib",
+  "error": null
+}

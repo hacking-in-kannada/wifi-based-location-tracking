@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/* Define Custom Cyber-Dark Theme variables for Tailwind v4 */
+@theme {
+  --color-cyber-black: #08060b;
+  --color-cyber-gray-dark: #12131a;
+  --color-cyber-gray-light: #1e2029;
+  --color-neon-purple: #c084fc;
+  --color-neon-purple-glow: rgba(192, 132, 252, 0.15);
+  --color-neon-green: #34d399;
+  --color-neon-green-glow: rgba(52, 211, 153, 0.15);
+  --color-neon-yellow: #fbbf24;
+  --color-neon-red: #f87171;
+
+  --font-sans: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* Global resets & animations */
+@layer base {
+  body {
+    background-color: var(--color-cyber-black);
+    color: #9ca3af;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    margin: 0;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0c0d12;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #252836;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c084fc;
+  }
+}
+
+/* Custom Utilities for Premium Glow Aesthetics */
+.orb {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.12;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.orb-a {
+  background: #aa3bff;
+  top: -10%;
+  left: -10%;
+}
+
+.orb-b {
+  background: #00f0ff;
+  bottom: -10%;
+  right: -10%;
+}
+
+.grid-backdrop {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.glow-card {
+  background-color: #12131a;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glow-card:hover {
+  border-color: rgba(192, 132, 252, 0.25);
+  box-shadow: 0 0 20px rgba(192, 132, 252, 0.05), 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Glowing text */
+.glow-text-purple {
+  text-shadow: 0 0 10px rgba(192, 132, 252, 0.6);
+}
+
+.glow-text-green {
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
+}
+
+/* Pulse animation for active node indicator */
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+    box-shadow: 0 0 0 0px rgba(192, 132, 252, 0.4);
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+    box-shadow: 0 0 15px 6px rgba(192, 132, 252, 0.2);
+  }
+}
+
+.pulse-glow-marker {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
