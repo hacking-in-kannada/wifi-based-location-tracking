@@ -5,9 +5,12 @@ Database connection and session management for WiFiSense.
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from database.models import Base
+import os
 
 # Default SQLite URL, can be overridden by configuration
-DEFAULT_DB_URL = "sqlite:///c:/Users/shree/Desktop/wifi/database/wifisense.db"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "database", "wifisense.db").replace("\\", "/")
+DEFAULT_DB_URL = f"sqlite:///{DB_PATH}"
 
 _engine = None
 _SessionFactory = None
