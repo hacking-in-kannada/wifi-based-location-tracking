@@ -1,18 +1,18 @@
-# WiFiSense Indoor Motion & CSI Fingerprinting
+# WiFiSense Indoor Motion & RSSI Fingerprinting
 
-WiFiSense is a production-oriented starter for a room-scale Wi-Fi CSI fingerprinting system. The goal is to estimate the closest trained zone from CSI data and surface confidence, motion state, and signal health in a modern dashboard.
+WiFiSense is a production-oriented starter for a room-scale Wi-Fi RSSI fingerprinting system. The goal is to estimate the closest trained zone from RSSI data and surface confidence, motion state, and signal health in a modern dashboard.
 
 ## What this repo contains
 
 - `index.html` - a polished standalone dashboard prototype
 - `styles.css` - the visual system for the interface
 - `app.js` - live simulated state, charts, and blueprint rendering
-- `backend/` - a FastAPI skeleton for CSI ingestion and localization
+- `backend/` - a FastAPI skeleton for RSSI ingestion and localization
 - `docs/` - architecture notes and implementation guidance
 
 ## Design goals
 
-- Use Wi-Fi CSI only for localization
+- Use Wi-Fi RSSI only for localization
 - Report estimated zones with confidence instead of exact coordinates
 - Keep the architecture modular and production-friendly
 - Leave room for firmware, ingestion, ML, API, and dashboard expansion
